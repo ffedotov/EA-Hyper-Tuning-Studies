@@ -26,7 +26,7 @@ parser.add_argument('--CXX', default='C1P')
 parser.add_argument('--SEL', default='SLB')
 args = parser.parse_args()
 
-NI=args.NI
+NI=int(args.NI)
 IPO=args.IPO
 MUT=args.MUT
 CXX=args.CXX
@@ -113,18 +113,18 @@ for CXPB_itr in range (0,11): #Iterating over all crossing probabilities from 0.
     MUTPB=-0.1
     for MUTPB_itr in range (0,11): #Iterating over all mutation probabilities from 0.1 to 1
       MUTPB+=0.1 
-#      for c in range (0,NI):
-#       total_count+=1
-#        temp_fits=fits
-#        temp_fits = list(map(toolbox.clone, fits))
-#        temp_fitnesses = list(map(toolbox.clone, fitnesses))
-#        g = 0
-#        itr=len(pop)
-#        bestvalue=GlobalMax
-#        temp_pop = list(map(toolbox.clone, pop))
-#        while min(temp_fits) > GlobalMin and itr < 1500:
-#        # A new generation
-#         g = g + 1    
+      for c in range (0,NI):
+        Temp_Fitness_Values=fits
+        Temp_Fitness_Values = list(map(toolbox.clone, fits))
+        Temp_Fitnesses = list(map(toolbox.clone, fitnesses))
+        g = 0
+        itr=len(pop)
+        F_best=GM
+        Temp_pop = list(map(toolbox.clone, pop))
+        while min(Temp_Fitness_Values) > GOP and itr < N:
+        # A new generation
+         g = g + 1
+         print g    
 #         MatingCandidates=tools.selBest(temp_pop, 10, fit_attr='fitness')
 #         Candidates = list(map(toolbox.clone, MatingCandidates))
 #         for child1, child2 in zip(Candidates[::2], Candidates[1::2]):

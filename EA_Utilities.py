@@ -164,6 +164,71 @@ def mutCreepInt(individual, low, up, indpb):
             individual[i] = max(1,individual[i]+random.randint(xl, xu))
     
     return individual,
+
+def mutRsCreepInt(individual, low, up, indpb):
+    """Mutate an individual by replacing attributes, with probability *indpb*,
+    by a integer uniformly drawn between *low* and *up* inclusively.
+    
+    :param individual: :term:`Sequence <sequence>` individual to be mutated.
+    :param low: The lower bound or a :term:`python:sequence` of
+                of lower bounds of the range from wich to draw the new
+                integer.
+    :param up: The upper bound or a :term:`python:sequence` of
+               of upper bounds of the range from wich to draw the new
+               integer.
+    :param indpb: Independent probability for each attribute to be mutated.
+    :returns: A tuple of one individual.
+    """
+    size = len(individual)
+    if not isinstance(low, Sequence):
+        low = repeat(low, size)
+    elif len(low) < size:
+        raise IndexError("low must be at least the size of individual: %d < %d" % (len(low), size))
+    if not isinstance(up, Sequence):
+        up = repeat(up, size)
+    elif len(up) < size:
+        raise IndexError("up must be at least the size of individual: %d < %d" % (len(up), size))
+    
+    for i, xl, xu in zip(xrange(size), low, up):
+        if random.random() < indpb:
+            individual[i] = individual[i]+random.randint(xl, xu)
+            if individual[i]>5:
+              individual[i]=5
+            if individual[i]<1:
+              individual[i]=1
+    
+    return individual,
+
+def mutRsGaussianInt(individual, sigma, indpb):
+    """This function applies a gaussian mutation of mean *mu* and standard
+    deviation *sigma* on the input individual. This mutation expects a
+    :term:`sequence` individual composed of real valued attributes.
+    The *indpb* argument is the probability of each attribute to be mutated.
+
+    :param individual: Individual to be mutated.
+    :param mu: Mean or :term:`python:sequence` of means for the
+               gaussian addition mutation.
+    :param sigma: Standard deviation or :term:`python:sequence` of
+                  standard deviations for the gaussian addition mutation.
+    :param indpb: Independent probability for each attribute to be mutated.
+    :returns: A tuple of one individual.
+
+    This function uses the :func:`~random.random` and :func:`~random.gauss`
+    functions from the python base :mod:`random` module.
+    """
+    size = len(individual)
+    if not isinstance(sigma, Sequence):
+        sigma = repeat(sigma, size)
+    elif len(sigma) < size:
+        raise IndexError("sigma must be at least the size of individual: %d < %d" % (len(sigma), size))
+    for i, s in zip(xrange(size), sigma):
+        if random.random() < indpb:
+            individual[i] += int(random.gauss(float(individual[i]), s))
+            if individual[i]>5:
+              individual[i]=5
+            if individual[i]<1:
+              individual[i]=1
+    return individual,
         
     
     
